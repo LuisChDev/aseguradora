@@ -5,62 +5,92 @@
  */
 
 /**
- * retorna los valores que coincidan en caulquiera de los campos.
+ * retorna los valores que coincidan en cualquiera de los campos.
  */
+const busqueda = (cadena: string): poliza[] => {
+  let matches: poliza[] = []
+  for (let row in dummies) {
+    if (dummies[row].nombre.includes(cadena)||
+      dummies[row].descripcion.includes(cadena)||
+      dummies[row].riesgo.includes(cadena)) {
+      matches.push(dummies[row]);
+      break;
+    }
+    for (let factor in dummies[row].coberturas) {
+      if (dummies[row].coberturas[factor][0].includes(cadena)) {
+        matches.push(dummies[row]);
+        break;
+      }
+    }
+  }
+
+  return matches;
+}
+
 
 /**
  * los datos dummy.
  */
-let dummies: [
-  // Nombre
-  string,
-  // Descripción
-  string,
-  // coberturas. tipo y porcentaje.
-  [cobertura, percentage][],
-  // Inicio de vigencia
-  Date,
-  // periodo de cobertura (en meses)
-  number,
-  // precio de la póliza
-  number,
-  // tipo de riesgo
-  ("bajo" | "medio" | "medio-alto" | "alto")
-][] = [
-  ["seguro para vehículo",
-   "Este seguro protege a su vehículo de robo o pérdida.",
-   [["Robo", 35], ["Pérdida", 40]],
-   new Date("2020/11/22 15:30:00"),
-   12,
-   300000,
-   "medio"
-  ],
-  ["Seguro de edificios",
-   "Proteja su casa, condominio o negocio de desastres naturales.",
-   [["Terremoto", 20], ["Incendio", 50]],
-   new Date("2020/11/26 17:10:00"),
-   15,
-   350000,
-   "medio"
-  ],
-  ["Seguros Comercios Cartagena",
-   "Recibe protección de ataques a tu local",
-   [["Robo", 20], ["Incendio", 40]],
-   new Date("2020/11/26 17:10:00"),
-   18,
-   500000,
-   "medio-alto"
-  ],
-
-  ["Protección trabajo de alto riesgo",
-   "Protege a los que más quieres",
-   [["Accidente", 40], ["Vida", 40]],
-   new Date("2020/11/20 20:10:00"),
-   24,
-   1000000,
-   "alto"
-  ],
+let dummies: poliza[] = [
+  {id: "2a4v98a1",
+   nombre: "seguro para vehículo",
+   descripcion: "Este seguro protege a su vehículo de robo o pérdida.",
+   coberturas: [["Robo", 35], ["Pérdida", 40]],
+   fecha: new Date("2020/11/22 15:30:00"),
+   periodo: 12,
+   precio: 300000,
+   riesgo: "medio"
+  },
+  {id: "642c97bf",
+   nombre: "Seguro de edificios",
+   descripcion: "Proteja su casa, condominio o negocio de desastres naturales.",
+   coberturas: [["Terremoto", 20], ["Incendio", 50]],
+   fecha: new Date("2020/11/26 17:10:00"),
+   periodo: 15,
+   precio: 350000,
+   riesgo: "medio"
+  },
+  {id: "124feeg2",
+   nombre: "Seguros Comercios Cartagena",
+   descripcion: "Recibe protección de ataques a tu local",
+   coberturas: [["Robo", 20], ["Incendio", 40]],
+   fecha: new Date("2020/11/26 17:10:00"),
+   periodo: 18,
+   precio: 500000,
+   riesgo: "medio-alto"
+  },
+  {id: "4fe2ac89",
+   nombre: "Protección trabajo de alto riesgo",
+   descripcion: "Protege a los que más quieres",
+   coberturas: [["Accidente", 40], ["Vida", 40]],
+   fecha: new Date("2020/11/20 20:10:00"),
+   periodo: 24,
+   precio: 1000000,
+   riesgo: "alto"
+  },
 ]
+
+/**
+ * el tipo de las polizas.
+ */
+type poliza = {
+  // ID
+  id: string,
+  // Nombre
+  nombre: string,
+  // Descripción
+  descripcion: string,
+  // coberturas. tipo y porcentaje.
+  coberturas: [cobertura, percentage][],
+  // Inicio de vigencia
+  fecha: Date,
+  // periodo de cobertura (en meses)
+  periodo: number,
+  // precio de la póliza
+  precio: number,
+  // tipo de riesgo
+  riesgo: ("bajo" | "medio" | "medio-alto" | "alto")
+}
 
 /**
  * tipos de cobertura
@@ -81,3 +111,5 @@ type percentage = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10
   | 71 | 72 | 73 | 74 | 75 | 76 | 77 | 78 | 79 | 80
   | 81 | 82 | 83 | 84 | 85 | 86 | 87 | 88 | 89 | 90
   | 91 | 92 | 93 | 94 | 95 | 96 | 97 | 98 | 99 | 100;
+
+export {busqueda, poliza};

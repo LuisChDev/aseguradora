@@ -15,3 +15,5 @@ web-build/
 # local stuff
 .envrc
 .log
+**/*.el
+backup

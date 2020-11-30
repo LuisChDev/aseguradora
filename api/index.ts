@@ -42,7 +42,21 @@ const Cobs = {
 /**
  * tipos de riesgo
  */
-type Riesgo = "bajo" | "medio" | "medio-alto" | "alto"
+enum Riesgo {
+  bajo,
+  medio,
+  medio_alto,
+  alto,
+}
+
+const Ries = {
+  0: "bajo",
+  1: "medio",
+  2: "medio-alto",
+  3: "alto"
+}
+
+// type Riesgo = "bajo" | "medio" | "medio-alto" | "alto"
 
 /**
  * el tipo de las polizas.
@@ -112,7 +126,7 @@ let dummies: Poliza[] = [
    fecha: new Date("2020/11/22 15:30:00"),
    periodo: 12,
    precio: 300000,
-   riesgo: "medio"
+   riesgo: "medio" as Riesgo
   },
   {id: "642c97bf",
    nombre: "Seguro de edificios",
@@ -121,7 +135,7 @@ let dummies: Poliza[] = [
    fecha: new Date("2020/11/26 17:10:00"),
    periodo: 15,
    precio: 350000,
-   riesgo: "medio"
+   riesgo: "medio" as Riesgo
   },
   {id: "124feeg2",
    nombre: "Seguros Comercios Cartagena",
@@ -130,7 +144,7 @@ let dummies: Poliza[] = [
    fecha: new Date("2020/11/26 17:10:00"),
    periodo: 18,
    precio: 500000,
-   riesgo: "medio-alto"
+   riesgo: "medio-alto" as Riesgo
   },
   {id: "4fe2ac89",
    nombre: "Protección trabajo de alto riesgo",
@@ -139,9 +153,9 @@ let dummies: Poliza[] = [
    fecha: new Date("2020/11/20 20:10:00"),
    periodo: 24,
    precio: 1000000,
-   riesgo: "alto"
+   riesgo: "alto" as Riesgo
   },
 ]
 
 
-export {busqueda, Poliza, modifica, Riesgo, Percentage, Cobertura, Cobs};
+export {busqueda, Poliza, modifica, Riesgo, Percentage, Cobertura, Cobs, Ries};

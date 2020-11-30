@@ -1,10 +1,12 @@
 import React, {useState} from 'react';
-import {TextInput, Button} from 'react-native';
+import {TextInput, Button, ScrollView} from 'react-native';
 
 import { Text, View } from '../components/Themed';
-import {Poliza, Cobertura, Cobs, Percentage, Riesgo, modifica} from '../api';
+import {Poliza, Cobertura, Cobs, Percentage, Riesgo, modifica, Ries} from '../api';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import SegmentedControl from '@react-native-community/segmented-control';
+
+import styles from './TabOneScreen_styles';
 
 /**
  * crea un formulario para editar la póliza.
@@ -68,7 +70,7 @@ const Formulario = ({ item }: {item: Poliza}) => {
    * muestra el formulario y permite modificarlo.
    */
   return (
-    <View>
+    <View style={styles.form}>
         <TextInput
           value={nombre}
           onChangeText={setNombre}
@@ -79,20 +81,38 @@ const Formulario = ({ item }: {item: Poliza}) => {
           onChangeText={setDescripcion}
         />
 
+        <Text>Para modificar los números,
+            selecciónalos por completo para borrarlos.</Text>
+
         {coberturas.map((_x, i) => (
-          <>
+          <View key={i}>
               <SegmentedControl
+                key={`${i}a`}
                 values={[Cobs[Cobertura.Terremoto], Cobs[Cobertura.Incendio],
                          Cobs[Cobertura.Robo], Cobs[Cobertura.Perdida],
                          Cobs[Cobertura.Vida], Cobs[Cobertura.Accidente]]}
                 selectedIndex={coberturas[i][0]}
-                onChange={(event) => setCoberturas(modifyCob(coberturas, Number(i), event.nativeEvent.selectedSegmentIndex as Cobertura, 0))}
+                onChange={(event) =>
+                  setCoberturas(
+                    modifyCob(
+                      coberturas,
+                      Number(i),
+                      event.nativeEvent.selectedSegmentIndex as Cobertura,
+                      0))}
               />
+
               <TextInput
+                key={`${i}b`}
                 value={coberturas[i][1].toString()}
-                onChangeText={(value) => setCoberturas(modifyCob(coberturas, Number(i), Number(value) as Percentage, 1))}
+                onChangeText={(value) =>
+                  setCoberturas(
+                    modifyCob(
+                      coberturas,
+                      Number(i),
+                      Number(value) as Percentage,
+                      1))}
               />
-          </>
+          </View>
         ))}
 
         <Button title="Seleccione la fecha" onPress={() => setShow(!show)} />
@@ -123,11 +143,16 @@ const Formulario = ({ item }: {item: Poliza}) => {
         <Text>El tipo de riesgo debe corresponder a uno de los siguientes:
             "bajo", "medio", "medio-alto" o "alto". Si es algo diferente
             el valor no cambiará. </Text>
+        {/* <SegmentedControl
+            values={[Riesgo.bajo, Riesgo.medio, Riesgo.medio_alto, Riesgo.alto].map((a) => Ries[a])}
+            selectedIndex={riesgo}
+            onChange={(event) => setRiesgo(event.nativeEvent.selectedSegmentIndex as Riesgo)}
+            /> */}
         <TextInput
-          value={riesgo}
+          value={Ries[riesgo]}
           onChangeText={(valor) => {
             if (["bajo", "medio", "medio-alto", "alto"].indexOf(valor) >= 0) {
-              setRiesgo(valor as Riesgo);
+              setRiesgo(valor as unknown as Riesgo);
             }
           }}
         />
